@@ -1,28 +1,132 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles/style.css">
-    <link rel="shortcut icon" href="favicon.ico" type="images/x-icon">
-    <title>Name Of Business</title>
+    <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
+    <title>Wireframe - Neurodivergência</title>
 </head>
 <body>
     <header>
-        <h1>Name Of Business</h1>
-        <p>From a neuro atypical brain to another</p>
+        <h1>Neurodivergência e AHSD</h1>
+        <button class="theme-toggle" onclick="toggleTheme()">Alternar Tema</button>
     </header>
 
     <nav>
-
+        <a href="#neurodivergencia">Neurodivergências</a>
+        <a href="#ahsd">AHSD</a>
+        <a href="#teste">Teste de Triagem</a>
+        <a href="#profissionais">Profissionais</a>
+        <a href="#facilitadores">Facilitadores</a>
+        <a href="#contato">Contato</a>
     </nav>
 
-    <main>
+    <main class="container">
+        <section id="neurodivergencia" class="fade-in">
+            <h2>Informações sobre Neurodivergências</h2>
+            <p>
+                Detalhes sobre o que é neurodivergência e como ela se manifesta.
+            </p>
+        </section>
 
+        <section id="ahsd" class="fade-in">
+            <h2>Informações sobre AHSD</h2>
+            <p>
+                Explicação sobre Altas Habilidades e Superdotação.
+            </p>
+        </section>
+
+        <section id="teste">
+            <h2>Teste de Triagem</h2>
+            <form id="formTriagem">
+                <div class="question">
+                    <p>Você aprende novos conceitos com facilidade?</p>
+                    <input type="radio" name="q1" value="3"> Sim, frequentemente<br>
+                    <input type="radio" name="q1" value="2"> Às vezes<br>
+                    <input type="radio" name="q1" value="1"> Não, preciso de mais explicações<br>
+                </div>
+                <div class="question">
+                    <p>Você sente que sua mente está constantemente ativa?</p>
+                    <input type="radio" name="q2" value="3"> Sim, o tempo todo<br>
+                    <input type="radio" name="q2" value="2"> Às vezes<br>
+                    <input type="radio" name="q2" value="1"> Não, raramente<br>
+                </div>
+                <div class="question">
+                    <p>Você tem hipersensibilidade a sons, luzes ou texturas?</p>
+                    <input type="radio" name="q3" value="3"> Sim, muito<br>
+                    <input type="radio" name="q3" value="2"> Às vezes<br>
+                    <input type="radio" name="q3" value="1"> Não, não percebo diferença<br>
+                </div>
+                <button type="button" onclick="calcularResultado()">Ver Resultado</button>
+            </form>
+            <div id="resultadoTeste"></div>
+        </section>
+
+        <section id="profissionais" class="fade-in">
+            <h2>Busca de Profissionais</h2>
+            <label for="localizacao">Localização:</label>
+            <input type="text" id="localizacao" placeholder="Digite sua cidade">
+            <label for="especialidade">Especialidade:</label>
+            <select id="especialidade">
+                <option value="psicologo">Psicólogo</option>
+                <option value="neurologista">Neurologista</option>
+                <option value="terapeuta">Terapeuta</option>
+            </select>
+            <button onclick="buscarProfissionais()">Buscar</button>
+            <div id="resultadoBusca"></div>
+        </section>
+
+        <section id="facilitadores" class="fade-in">
+            <h2>Facilitadores de Vida</h2>
+            <p>
+                Recursos e estratégias para melhorar o dia a dia.
+            </p>
+        </section>
+
+        <section id="contato" class="fade-in">
+            <h2>Contato</h2>
+            <p>
+                Entre em contato para mais informações e suporte.
+            </p>
+        </section>
     </main>
 
     <footer>
-
+        <p>&copy; 2025 - Projeto Neurodivergência</p>
     </footer>
+
+    <script>
+        function toggleTheme() {
+            document.body.classList.toggle("light-mode");
+        }
+
+        function iniciarTeste() {
+            document.getElementById("resultadoTeste").innerHTML = "<p style='color: var(--highlight);'>Obrigado por participar! Em breve, traremos mais detalhes sobre os resultados.</p>";
+        }
+
+        function calcularResultado() {
+            let score = 0;
+            document.querySelectorAll('input[type=radio]:checked').forEach((input) => {
+                score += parseInt(input.value);
+            });
+
+            let resultado = "";
+            if (score >= 8) {
+                resultado = "Pode ser interessante buscar mais informações sobre neurodivergência.";
+            } else if (score >= 5) {
+                resultado = "Você possui algumas características neurodivergentes, mas sem impacto significativo.";
+            } else {
+                resultado = "Seu perfil está mais alinhado ao neurotípico.";
+            }
+            document.getElementById("resultadoTeste").innerHTML = `<p style='color: var(--highlight);'>${resultado}</p>`;
+        }
+
+        function buscarProfissionais() {
+            let local = document.getElementById("localizacao").value;
+            let especialidade = document.getElementById("especialidade").value;
+            document.getElementById("resultadoBusca").innerHTML = `<p style='color: var(--highlight);'>Exibindo resultados para ${especialidade} em ${local}.</p>`;
+        }
+    </script>
 </body>
 </html>
