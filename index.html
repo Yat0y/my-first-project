@@ -5,12 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles/style.css">
     <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <title>Wireframe - Neurodivergência</title>
 </head>
 <body>
     <header>
         <h1>Neurodivergência e AHSD</h1>
-        <button class="theme-toggle" onclick="toggleTheme()">Alternar Tema</button>
+        <button class="toggle-mode" onclick="toggleMode()">☀️</button>
     </header>
 
     <nav>
@@ -23,72 +26,79 @@
     </nav>
 
     <main class="container">
-        <section id="neurodivergencia" class="fade-in">
+        <section id="neurodivergencia" data-aos="fade-up">
             <h2>Informações sobre Neurodivergências</h2>
-            <p>
-                Detalhes sobre o que é neurodivergência e como ela se manifesta.
-            </p>
+            <p data-aos="fade-left">Detalhes sobre o que é neurodivergência e como ela se manifesta.</p>
         </section>
 
-        <section id="ahsd" class="fade-in">
+        <section id="ahsd" data-aos="fade-up">
             <h2>Informações sobre AHSD</h2>
-            <p>
-                Explicação sobre Altas Habilidades e Superdotação.
-            </p>
+            <!-- <div class="brain-container"></div>
+                <div class="rays">
+                    <div class="ray"></div>
+                    <div class="ray"></div>
+                    <div class="ray"></div>
+                    <div class="ray"></div>
+                    <div class="ray"></div>
+                    <div class="ray"></div>
+                    <div class="ray"></div>
+                    <div class="ray"></div>
+                </div>
+                <div class="brain"></div>
+            </div> -->
+            <p data-aos="fade-left">Explicação sobre Altas Habilidades e Superdotação.</p>
+            <div class="chart-container"></div>
+                <canvas id="ahsdChart"></canvas>
+            </div>
         </section>
 
-        <section id="teste">
+        <section id="teste" data-aos="fade-up">
             <h2>Teste de Triagem</h2>
-            <form id="formTriagem">
+            <p data-aos="fade-left">Um teste para identificar possíveis traços neurodivergentes.</p>
+            <div class="teste-container" data-aos="zoom-in">
                 <div class="question">
-                    <p>Você aprende novos conceitos com facilidade?</p>
-                    <input type="radio" name="q1" value="3"> Sim, frequentemente<br>
-                    <input type="radio" name="q1" value="2"> Às vezes<br>
-                    <input type="radio" name="q1" value="1"> Não, preciso de mais explicações<br>
+                    <p>1. Você se sente frequentemente sobrecarregado por estímulos sensoriais, como barulhos altos ou luzes fortes?</p>
+                    <button onclick="responder(1, 'Sim')">Sim</button>
+                    <button onclick="responder(1, 'Não')">Não</button>
                 </div>
+
                 <div class="question">
-                    <p>Você sente que sua mente está constantemente ativa?</p>
-                    <input type="radio" name="q2" value="3"> Sim, o tempo todo<br>
-                    <input type="radio" name="q2" value="2"> Às vezes<br>
-                    <input type="radio" name="q2" value="1"> Não, raramente<br>
+                    <p>2. Você tem dificuldade em manter a atenção em tarefas repetitivas ou tediosas?</p>
+                    <button onclick="responder(2, 'Sim')">Sim</button>
+                    <button onclick="responder(2, 'Não')">Não</button>
                 </div>
-                <div class="question">
-                    <p>Você tem hipersensibilidade a sons, luzes ou texturas?</p>
-                    <input type="radio" name="q3" value="3"> Sim, muito<br>
-                    <input type="radio" name="q3" value="2"> Às vezes<br>
-                    <input type="radio" name="q3" value="1"> Não, não percebo diferença<br>
-                </div>
-                <button type="button" onclick="calcularResultado()">Ver Resultado</button>
-            </form>
-            <div id="resultadoTeste"></div>
+
+                <button onclick="calcularResultado()">Ver Resultado</button>
+                <p id="resultado"></p>
+            </div>
         </section>
 
-        <section id="profissionais" class="fade-in">
-            <h2>Busca de Profissionais</h2>
-            <label for="localizacao">Localização:</label>
-            <input type="text" id="localizacao" placeholder="Digite sua cidade">
-            <label for="especialidade">Especialidade:</label>
-            <select id="especialidade">
-                <option value="psicologo">Psicólogo</option>
-                <option value="neurologista">Neurologista</option>
-                <option value="terapeuta">Terapeuta</option>
-            </select>
-            <button onclick="buscarProfissionais()">Buscar</button>
-            <div id="resultadoBusca"></div>
+        <section id="profissionais" data-aos="fade-up">
+            <h2>Profissionais</h2>
+            <p data-aos="fade-left">Encontre especialistas próximos a você.</p>
+            <div class="search-container" data-aos="zoom-in"></div>
+                <input type="text" id="searchInput" class="search-input" placeholder="Digite o nome, especialidade ou localização">
+            </div>
+            <div id="profissionaisLista">
+                <div class="profissional" data-name="Dr. João Silva" data-especialidade="Psicólogo" data-local="São Paulo">
+                    <h3>Dr. João Silva</h3>
+                    <p>Psicólogo - São Paulo</p>
+                </div>
+                <div class="profissional" data-name="Dra. Maria Oliveira" data-especialidade="Neurologista" data-local="Rio de Janeiro">
+                    <h3>Dra. Maria Oliveira</h3>
+                    <p>Neurologista - Rio de Janeiro</p>
+                </div>
+            </div>
         </section>
 
-        <section id="facilitadores" class="fade-in">
+        <section id="facilitadores" data-aos="fade-up">
             <h2>Facilitadores de Vida</h2>
-            <p>
-                Recursos e estratégias para melhorar o dia a dia.
-            </p>
+            <p data-aos="fade-left">Recursos e estratégias para melhorar o dia a dia.</p>
         </section>
 
-        <section id="contato" class="fade-in">
+        <section id="contato" data-aos="fade-up">
             <h2>Contato</h2>
-            <p>
-                Entre em contato para mais informações e suporte.
-            </p>
+            <p data-aos="fade-left">Entre em contato para mais informações e suporte.</p>
         </section>
     </main>
 
@@ -97,36 +107,93 @@
     </footer>
 
     <script>
-        function toggleTheme() {
-            document.body.classList.toggle("light-mode");
-        }
+        AOS.init();
+        document.addEventListener("DOMContentLoaded", function() {
+            const sections = document.querySelectorAll("section");
+            
+            function revealSections() {
+                sections.forEach(section => {
+                    const sectionTop = section.getBoundingClientRect().top;
+                    if (sectionTop < window.innerHeight * 0.85) {
+                        section.classList.add("visible");
+                    }
+                });
+            }
+            
+            window.addEventListener("scroll", revealSections);
+            revealSections();
+        });
 
-        function iniciarTeste() {
-            document.getElementById("resultadoTeste").innerHTML = "<p style='color: var(--highlight);'>Obrigado por participar! Em breve, traremos mais detalhes sobre os resultados.</p>";
+        let respostas = {};
+
+        function responder(pergunta, resposta) {
+            respostas[pergunta] = resposta;
         }
 
         function calcularResultado() {
-            let score = 0;
-            document.querySelectorAll('input[type=radio]:checked').forEach((input) => {
-                score += parseInt(input.value);
-            });
-
-            let resultado = "";
-            if (score >= 8) {
-                resultado = "Pode ser interessante buscar mais informações sobre neurodivergência.";
-            } else if (score >= 5) {
-                resultado = "Você possui algumas características neurodivergentes, mas sem impacto significativo.";
+            let score = Object.values(respostas).filter(r => r === 'Sim').length;
+            let resultadoTexto = "";
+            
+            if (score >= 2) {
+                resultadoTexto = "Seus resultados indicam possíveis traços neurodivergentes. Recomendamos buscar um profissional especializado.";
             } else {
-                resultado = "Seu perfil está mais alinhado ao neurotípico.";
+                resultadoTexto = "Seus resultados não indicam fortes sinais de neurodivergência, mas cada caso é único."
             }
-            document.getElementById("resultadoTeste").innerHTML = `<p style='color: var(--highlight);'>${resultado}</p>`;
+            
+            document.getElementById("resultado").innerText = resultadoTexto;
         }
 
-        function buscarProfissionais() {
-            let local = document.getElementById("localizacao").value;
-            let especialidade = document.getElementById("especialidade").value;
-            document.getElementById("resultadoBusca").innerHTML = `<p style='color: var(--highlight);'>Exibindo resultados para ${especialidade} em ${local}.</p>`;
+
+        document.addEventListener("DOMContentLoaded", () => {
+            if (localStorage.getItem("theme") === "light") {
+                document.body.classList.add("light-mode");
+                document.querySelector(".toggle-mode").textContent = "🌙";
+            }
+        });
+        function toggleMode() {
+            document.body.classList.toggle('light-mode');
+            const isLightMode = document.body.classList.contains('light-mode');
+            document.querySelector(".toggle-mode").textContent = isLightMode ? "🌙" : "☀️";
+            localStorage.setItem("theme", isLightMode ? "light" : "dark");
         }
+
+        document.getElementById("searchInput").addEventListener("input", function() {
+            let filter = this.value.toLowerCase();
+            let profissionais = document.querySelectorAll(".profissional");
+            profissionais.forEach(profissional => {
+                let name = profissional.dataset.name.toLowerCase();
+                let especialidade = profissional.dataset.especialidade.toLowerCase();
+                let local = profissional.dataset.local.toLowerCase();
+                if (name.includes(filter) || especialidade.includes(filter) || local.includes(filter)) {
+                    profissional.classList.add("show");
+                } else {
+                    profissional.classList.remove("show");
+                }
+            });
+        });
+
+        const ctx = document.getElementById('ahsdChart').getContext('2d');
+        const ahsdChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Criatividade', 'Memória', 'Habilidade Matemática', 'Linguagem', 'Resolução de Problemas'],
+                datasets: [{
+                    label: 'Habilidades em pessoas com AHSD',
+                    data: [95, 90, 85, 88, 92],
+                    backgroundColor: ['#F5CB31', '#A09055', '#4B4941', '#515AB5', '#3041F4'],
+                    borderColor: '#ffffff',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
     </script>
 </body>
 </html>
