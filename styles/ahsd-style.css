@@ -1,0 +1,71 @@
+@charset "UTF-8";
+
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background: #181818;
+    color: #F5CB31;
+}
+
+.container {
+    margin-top: 50px;
+}
+
+.hidden {
+    display: none;
+}
+
+#startButton, #startComplexTestButton, #startFocusTestButton {
+    background: linear-gradient(45deg, #3041F4, #515AB5);
+    color: white;
+    padding: 15px 30px;
+    font-size: 18px;
+    border: none;
+    cursor: pointer;
+    border-radius: 10px;
+    transition: background 0.3s, transform 0.2s;
+    margin: 10px;
+}
+
+#startButton:hover, #startComplexTestButton:hover, #startFocusTestButton {
+    background: #515AB5;
+    transform: scale(1.1);
+}
+
+.question {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.option {
+    display: block;
+    background: #A09055;
+    color: white;
+    padding: 10px;
+    margin: 10px auto;
+    border: none;
+    cursor: pointer;
+    width: 200px;
+    border-radius: 10px;
+    transition: background 0.3s, transform 0.2s;
+}
+
+.option:hover {
+    background: #484941;
+    transform: scale(1.1);
+}
+
+.fade-in {
+    animation: fadeIn 0.5s ease-in;
+}
+
+.timer {
+    font-size: 20px;
+    margin-bottom: 20px;
+    color: #FF5555;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}

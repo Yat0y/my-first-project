@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles/ahsd-style.css">
+    <title>Simulação AHSD</title>
+</head>
+<body>
+    <div class="container">
+        <h1>Teste de Processamento Rápido</h1>
+        <p>Identifique o padrão o mais rápido possível!</p>
+        <button id="startButton" onclick="startTest()">Iniciar Teste</button>
+        <div id="test" class="hidden">
+            <p id="timer" class="timer"></p>
+            <p id="question" class="question"></p>
+            <div id="options"></div>
+        </div>
+
+        <h1>Teste de Conexões</h1>
+        <p>?</p>
+        <button id="startComplexTestButton" onclick="startComplexTest()">Iniciar Teste</button>
+        <div id="complexTest" class="hidden">
+            <p id="complexTimer" class="timer"></p>
+            <p id="complexQuestion" class="question"></p>
+            <div id="complexOptions"></div>
+        </div>
+
+        <h1>Teste de Foco</h1>
+        <p>?</p>
+        <button id="startFocusTestButton" onclick="startFocusTest()">Iniciar Teste</button>
+        <div id="focusTest" class="hidden">
+            <p id="focusTimer" class="timer"></p>
+            <p id="focusTask" class="question">Clique no botão o mais rápido possível sempre que ele aparecer!</p>
+            <button id="focusButton" class="option hidden" onclick="clickFocusButton()">Clique aqui!</button>
+        </div>
+    </div>
+
+    <script>
+        let questions = [
+            { q: "2 + 2 = ?", options: ["3", "4", "5"], answer: "4", time: 10 },
+            { q: "5 × 3 = ?", options: ["15", "10", "20"], answer: "15", time: 8 },
+            { q: "12 ÷ 4 = ?", options: ["2", "3", "4"], answer: "3", time: 6 },
+            { q: "√25 = ?", options: ["4", "5", "6"], answer: "5", time: 5 },
+            { q: "8 × 7 = ?", options: ["54", "56", "58"], answer: "56", time: 4 }
+        ];
+        let complexQuestions = [
+            { q: "Qual palavra se conecta com 'Sol', 'Mar' e 'Areia'?", options: ["Férias", "Lua", "Montanha"], answer: "Férias", time: 12 },
+            { q: "O que todas essas palavras têm em comum: 'Cachorro', 'Gato', 'Coelho'?", options: ["Animais", "Carros", "Frutas"], answer: "Animais", time: 10 },
+            { q: "Qual número completa a sequência: 2, 6, 12, 20, ?", options: ["30", "28", "26"], answer: "30", time: 8 }
+        ];
+        let currentQuestion = 0;
+        let currentComplexQuestion = 0;
+        let timer, complexTimer, focusTimer;
+        let timeLeft, complexTimeLeft, focusTimeLeft = 30;
+        let focusActive = false
+
+        function startTest() {
+            document.getElementById("startButton").classList.add("hidden");
+            document.getElementById("test").classList.remove("hidden");
+            showQuestion();
+        }
+
+        function showQuestion() {
+            clearInterval(timer);
+            let questionObj = questions[currentQuestion];
+            document.getElementById("question").textContent = questionObj.q;
+            let optionsDiv = document.getElementById("options");
+            optionsDiv.innerHTML = "";
+            timeLeft = questionObj.time;
+            upadteTimer();
+            timer = setInterval(upadteTimer, 1000);
+            questionObj.options.forEach(option => {
+                let btn = document.createElement("button");
+                btn.textContent = option;
+                btn.classList.add("option", "fade-in");
+                btn.onclick = () => checkAnswer(option);
+                optionsDiv.appendChild(btn);
+            });
+        }
+
+        function upadteTimer() {
+            document.getElementById("timer").textContent = `Tempo restante: ${timeLeft}s`;
+            if (timeLeft <= 0) {
+                clearInterval(timer);
+                alert("Tempo esgotado! Tente novamente.");
+            }
+            timeLeft--;
+        }
+
+        function checkAnswer(selected) {
+            clearInterval(timer);
+            if (selected === questions[currentQuestion].answer) {
+                currentQuestion++;
+                if (currentQuestion < questions.length) {
+                    showQuestion();
+                } else {
+                    document.getElementById("test").innerHTML = "<h2>Parabéns! Você concluiu o teste!</h2>";
+                }
+            } else {
+                alert("Resposta errada! Tente novamente.");
+                showQuestion();
+            }
+        }
+
+        function startComplexTest() {
+            document.getElementById("startComplexTestButton").classList.add("hidden");
+            document.getElementById("complexTest").classList.remove("hidden");
+            showComplexQuestion();
+        }
+
+        function showComplexQuestion() {
+            clearInterval(complexTimer);
+            let questionObj = complexQuestions[currentComplexQuestion];
+            document.getElementById("complexQuestion").textContent = questionObj.q;
+            let optionsDiv = document.getElementById("complexOptions");
+            optionsDiv.innerHTML = "";
+            complexTimeLeft = questionObj.time;
+            complexTimer = setInterval(updateComplexTimer, 1000);
+            questionObj.options.forEach(option => {
+                let btn = document.createElement("button");
+                btn.textContent = option;
+                btn.classList.add("option", "fade-in");
+                btn.onclick = () => checkComplexAnswer(option);
+                optionsDiv.appendChild(btn);
+            });
+        }
+
+        function checkComplexAnswer(selected) {
+            if (selected === complexQuestions[currentComplexQuestion].answer) {
+                alert("Resposta correta!");
+                currentComplexQuestion++;
+                if (currentComplexQuestion < complexQuestions.length) {
+                    showComplexQuestion();
+                } else {
+                    document.getElementById("complexTest").innerHTML = "<h2>Parabéns! Você concluiu o teste!</h2>";
+                }
+            } else {
+                alert("Resposta errada! Tente novamente.");
+            }
+        }
+
+        function startFocusTest() {
+            document.getElementById("startFocusTestButton").classList.add("hidden");
+            document.getElementById("focusTest").classList.remove("hidden");
+            startFocusGame();
+        }
+
+        function startFocusGame() {
+            focusTimeLeft = 30;
+            document.getElementById("focusTimer").textContent = `Tempo restante: ${focusTimeLeft}s`;
+            focusTimer = setInterval(updateFocusTimer, 1000);
+            spawnFocusButton();
+        }
+
+        function updateFocusTimer() {
+            focusTimeLeft--;
+            document.getElementById("focusTimer").textContent = `Tempo restante: ${focusTimeLeft}s`;
+            if (focusTimeLeft <= 0) {
+                clearInterval(focusTimer);
+                alert("Tempo esgotado! Veja quantas vezes você conseguiu clicar no botão.");
+                document.getElementById("focusTest").innerHTML = "<h2>Teste concluído!</h2>";
+            }
+        }
+
+        function spawnFocusButton() {
+            setTimeout(() => {
+                if (focusTimeLeft > 0) {
+                    let button = document.getElementById("focusButton");
+                    button.classList.remove("hidden");
+                    focusActive = true;
+                }
+            }, Math.random() * 3000 + 1000);
+        }
+
+        function clickFocusButton() {
+            if (focusActive) {
+                document.getElementById("focusButton").classList.add("hidden");
+                focusActive = false;
+                spawnFocusButton();
+            }
+        }
+    </script>
+</body>
+</html>
