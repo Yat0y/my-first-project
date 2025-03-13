@@ -13,10 +13,11 @@
 <body>
     <header>
         <h1>Neurodivergência e AHSD</h1>
-        <button class="toggle-mode" onclick="toggleMode()">☀️</button>
+        <button class="toggle-mode" onclick="toggleMode()" aria-label="Alternar modo de tema">☀️</button>
+        <button class="toggle-sidebar" onclick="toggleSidebar()" aria-label="Abrir/fechar menu lateral">☰</button>
     </header>
 
-    <nav>
+    <nav class="sidebar">
         <a href="#neurodivergencia">Neurodivergências</a>
         <a href="#ahsd">AHSD</a>
         <a href="#teste">Teste de Triagem</a>
@@ -33,21 +34,8 @@
 
         <section id="ahsd" data-aos="fade-up">
             <h2>Informações sobre AHSD</h2>
-            <!-- <div class="brain-container"></div>
-                <div class="rays">
-                    <div class="ray"></div>
-                    <div class="ray"></div>
-                    <div class="ray"></div>
-                    <div class="ray"></div>
-                    <div class="ray"></div>
-                    <div class="ray"></div>
-                    <div class="ray"></div>
-                    <div class="ray"></div>
-                </div>
-                <div class="brain"></div>
-            </div> -->
             <p data-aos="fade-left">Explicação sobre Altas Habilidades e Superdotação.</p>
-            <div class="chart-container"></div>
+            <div class="chart-container">
                 <canvas id="ahsdChart"></canvas>
             </div>
         </section>
@@ -76,14 +64,17 @@
         <section id="profissionais" data-aos="fade-up">
             <h2>Profissionais</h2>
             <p data-aos="fade-left">Encontre especialistas próximos a você.</p>
+
             <div class="search-container" data-aos="zoom-in"></div>
                 <input type="text" id="searchInput" class="search-input" placeholder="Digite o nome, especialidade ou localização">
             </div>
+
             <div id="profissionaisLista">
                 <div class="profissional" data-name="Dr. João Silva" data-especialidade="Psicólogo" data-local="São Paulo">
                     <h3>Dr. João Silva</h3>
                     <p>Psicólogo - São Paulo</p>
                 </div>
+
                 <div class="profissional" data-name="Dra. Maria Oliveira" data-especialidade="Neurologista" data-local="Rio de Janeiro">
                     <h3>Dra. Maria Oliveira</h3>
                     <p>Neurologista - Rio de Janeiro</p>
@@ -107,7 +98,36 @@
     </footer>
 
     <script>
-        AOS.init();
+        // Animacao De Rolagem Da Tela
+
+        AOS.init({
+            duration: 700
+        });
+
+        // Tema Dark & Light
+        
+        document.addEventListener("DOMContentLoaded", () => {
+            if (localStorage.getItem("theme") === "light") {
+                document.body.classList.add("light-mode");
+                document.querySelector(".toggle-mode").textContent = "🌙";
+            }
+        });
+        function toggleMode() {
+            document.body.classList.toggle('light-mode');
+            const isLightMode = document.body.classList.contains('light-mode');
+            document.querySelector(".toggle-mode").textContent = isLightMode ? "🌙" : "☀️";
+            localStorage.setItem("theme", isLightMode ? "light" : "dark");
+        }
+
+        // Sidebar Menu
+
+        function toggleSidebar() {
+            document.querySelector(".sidebar").classList.toggle("collapsed");
+            document.querySelector(".container").classList.toggle("collapsed");
+        }
+
+        // Questionario
+
         document.addEventListener("DOMContentLoaded", function() {
             const sections = document.querySelectorAll("section");
             
@@ -143,19 +163,7 @@
             document.getElementById("resultado").innerText = resultadoTexto;
         }
 
-
-        document.addEventListener("DOMContentLoaded", () => {
-            if (localStorage.getItem("theme") === "light") {
-                document.body.classList.add("light-mode");
-                document.querySelector(".toggle-mode").textContent = "🌙";
-            }
-        });
-        function toggleMode() {
-            document.body.classList.toggle('light-mode');
-            const isLightMode = document.body.classList.contains('light-mode');
-            document.querySelector(".toggle-mode").textContent = isLightMode ? "🌙" : "☀️";
-            localStorage.setItem("theme", isLightMode ? "light" : "dark");
-        }
+        // Busca Profissionais
 
         document.getElementById("searchInput").addEventListener("input", function() {
             let filter = this.value.toLowerCase();
